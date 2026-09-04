@@ -1,0 +1,21 @@
+﻿department_code,department_name,plant_code,sort_order,active
+PPC,Production Planning Control,BEI,10,true
+PROD,Production,BEI,20,true
+QA,Quality Assurance,BEI,30,true
+ENG,Engineering,BEI,40,true
+MTN,Maintenance,BEI,50,true
+WHS,Warehouse,BEI,60,true
+MCL,Material Control Logistics,BEI,70,true
+PUR,Purchasing,BEI,80,true
+HRGA,Human Resources & General Affairs,BEI,90,true
+FIN,Finance,BEI,100,true
+IT,Information Technology,BEI,110,true
+SCM,Supply Chain Management,BEI,120,true
+PP,Preparation Process,BEI,130,true
+HA,Housing & Assembly,BEI,140,true
+VCP,Visual Check Process,BEI,150,true
+RFG,Ready Finished Goods,BEI,160,true
+QC,Quality Control,BEI,170,true
+LAB,Quality Laboratory,BEI,180,true
+EXIM,Export Import,BEI,190,true
+MGMT,Plant Management,BEI,200,true

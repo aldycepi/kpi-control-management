@@ -1,0 +1,51 @@
+﻿employee_code,username,password,full_name,department_code,section,position_name,role_code,active,must_change_password
+MGT001,plant.manager,DemoPass123!,Plant Manager,MGMT,Management,Plant Manager,PLANT_MANAGER,True,True
+MGT002,general.manager,DemoPass123!,General Manager,MGMT,Management,General Manager,GENERAL_MANAGER,True,True
+MGT003,bod.ki,DemoPass123!,BOD Kinenta,MGMT,Board,Director,BOD_KI,True,True
+MGT004,bod.bei,DemoPass123!,BOD Banshu,MGMT,Board,Director,BOD_BEI,True,True
+ADM001,system.admin,DemoPass123!,System Administrator,MGMT,IT Governance,Administrator,ADMIN,True,True
+PPC001,demo.ppc01,DemoPass123!,Andi Pratama,PPC,Support,Leader,LEADER,True,True
+PPC002,demo.ppc02,DemoPass123!,Dandi Rusdian,PPC,Support,Assistant Manager,ASSMAN,True,True
+PPC003,demo.ppc03,DemoPass123!,Rizki Rahmatullah,PPC,Support,Staff,STAFF,True,True
+PPC004,demo.ppc04,DemoPass123!,Ayu Marlina,PPC,Support,Staff,STAFF,True,True
+PPC005,demo.ppc05,DemoPass123!,Dewi Yuliana,PPC,Support,Staff,STAFF,True,True
+PROD001,demo.prod01,DemoPass123!,Rina Kusuma,PROD,Operation,Leader,LEADER,True,True
+PROD002,demo.prod02,DemoPass123!,Fajar Setiawan,PROD,Operation,Assistant Manager,ASSMAN,True,True
+PROD003,demo.prod03,DemoPass123!,Hendra Saputra,PROD,Operation,Staff,STAFF,True,True
+PROD004,demo.prod04,DemoPass123!,Yuli Nurfadilah,PROD,Operation,Staff,STAFF,True,True
+PROD005,demo.prod05,DemoPass123!,Siti Husna,PROD,Operation,Staff,STAFF,True,True
+QA001,demo.qa01,DemoPass123!,Rangga Yudha,QA,Support,Leader,LEADER,True,True
+QA002,demo.qa02,DemoPass123!,Wendi Juniawan,QA,Support,Assistant Manager,ASSMAN,True,True
+QA003,demo.qa03,DemoPass123!,Elin Alpiani,QA,Support,Staff,STAFF,True,True
+QA004,demo.qa04,DemoPass123!,Rahma Sipa,QA,Support,Staff,STAFF,True,True
+QA005,demo.qa05,DemoPass123!,Irma Ramly,QA,Support,Staff,STAFF,True,True
+ENG001,demo.eng01,DemoPass123!,Memey Yudiantono,ENG,Support,Leader,LEADER,True,True
+ENG002,demo.eng02,DemoPass123!,Rosalina Reinaldi,ENG,Support,Assistant Manager,ASSMAN,True,True
+ENG003,demo.eng03,DemoPass123!,Yasir Rosid,ENG,Support,Staff,STAFF,True,True
+ENG004,demo.eng04,DemoPass123!,Deti Azizi,ENG,Support,Staff,STAFF,True,True
+ENG005,demo.eng05,DemoPass123!,Aldino Permana,ENG,Support,Staff,STAFF,True,True
+MTN001,demo.mtn01,DemoPass123!,Herman Pratama,MTN,Operation,Leader,LEADER,True,True
+MTN002,demo.mtn02,DemoPass123!,Fahruzy Rusdian,MTN,Operation,Assistant Manager,ASSMAN,True,True
+MTN003,demo.mtn03,DemoPass123!,Yogi Rahmatullah,MTN,Operation,Staff,STAFF,True,True
+MTN004,demo.mtn04,DemoPass123!,Indriana Marlina,MTN,Operation,Staff,STAFF,True,True
+MTN005,demo.mtn05,DemoPass123!,Hamdan Yuliana,MTN,Operation,Staff,STAFF,True,True
+WHS001,demo.whs01,DemoPass123!,Mukhtadin Kusuma,WHS,Operation,Leader,LEADER,True,True
+WHS002,demo.whs02,DemoPass123!,Utami Setiawan,WHS,Operation,Assistant Manager,ASSMAN,True,True
+WHS003,demo.whs03,DemoPass123!,Sehono Saputra,WHS,Operation,Staff,STAFF,True,True
+WHS004,demo.whs04,DemoPass123!,Saiful Nurfadilah,WHS,Operation,Staff,STAFF,True,True
+WHS005,demo.whs05,DemoPass123!,Nanda Husna,WHS,Operation,Staff,STAFF,True,True
+MCL001,demo.mcl01,DemoPass123!,Bagus Yudha,MCL,Operation,Leader,LEADER,True,True
+MCL002,demo.mcl02,DemoPass123!,Teguh Juniawan,MCL,Operation,Assistant Manager,ASSMAN,True,True
+MCL003,demo.mcl03,DemoPass123!,Novi Alpiani,MCL,Operation,Staff,STAFF,True,True
+MCL004,demo.mcl04,DemoPass123!,Intan Sipa,MCL,Operation,Staff,STAFF,True,True
+MCL005,demo.mcl05,DemoPass123!,Rudi Ramly,MCL,Operation,Staff,STAFF,True,True
+PUR001,demo.pur01,DemoPass123!,Agus Yudiantono,PUR,Support,Leader,LEADER,True,True
+PUR002,demo.pur02,DemoPass123!,Lina Reinaldi,PUR,Support,Assistant Manager,ASSMAN,True,True
+PUR003,demo.pur03,DemoPass123!,Maya Rosid,PUR,Support,Staff,STAFF,True,True
+PUR004,demo.pur04,DemoPass123!,Budi Azizi,PUR,Support,Staff,STAFF,True,True
+PUR005,demo.pur05,DemoPass123!,Eka Permana,PUR,Support,Staff,STAFF,True,True
+HRGA001,demo.hrga01,DemoPass123!,Taufik Pratama,HRGA,Support,Leader,LEADER,True,True
+HRGA002,demo.hrga02,DemoPass123!,Dian Rusdian,HRGA,Support,Assistant Manager,ASSMAN,True,True
+HRGA003,demo.hrga03,DemoPass123!,Arif Rahmatullah,HRGA,Support,Staff,STAFF,True,True
+HRGA004,demo.hrga04,DemoPass123!,Nina Marlina,HRGA,Support,Staff,STAFF,True,True
+HRGA005,demo.hrga05,DemoPass123!,Gilang Yuliana,HRGA,Support,Staff,STAFF,True,True

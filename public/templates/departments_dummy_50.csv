@@ -1,0 +1,11 @@
+﻿department_code,department_name,plant_code,sort_order,active
+PPC,Production Planning Control,BEI,10,True
+PROD,Production,BEI,20,True
+QA,Quality Assurance,BEI,30,True
+ENG,Engineering,BEI,40,True
+MTN,Maintenance,BEI,50,True
+WHS,Warehouse,BEI,60,True
+MCL,Material Control Logistics,BEI,70,True
+PUR,Purchasing,BEI,80,True
+HRGA,Human Resources & General Affairs,BEI,90,True
+MGMT,Plant Management,BEI,100,True
