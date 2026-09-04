@@ -1,0 +1,2 @@
+﻿matrix_code,department_code,section,submitter_role_code,checked1_role_code,approval1_role_code,approval2_role_code,approval3_role_code,checked2_role_code,approval4_role_code,priority,active,note
+PPC-STAFF,PPC,*,STAFF,LEADER,ASSMAN,PLANT_MANAGER,GENERAL_MANAGER,BOD_KI,BOD_BEI,100,true,Standard six-stage route

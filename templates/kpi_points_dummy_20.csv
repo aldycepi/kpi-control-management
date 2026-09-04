@@ -1,0 +1,21 @@
+﻿form_no,point_no,subject,kpi_objective,uom,weight_percent,source_data,target,actual,calc_type,manual_score
+DEMO-KPI-202607-001,1,Delivery,Delivery Performance Achievement,%,100,Demo manufacturing data,100,98,LOWER_BETTER,
+DEMO-KPI-202607-002,1,Output,Output Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,95
+DEMO-KPI-202607-003,1,Quality,Quality Performance Achievement,%,100,Demo manufacturing data,100,96,HIGHER_BETTER,
+DEMO-KPI-202607-004,1,Safety,Safety Performance Achievement,%,100,Demo manufacturing data,100,95,LOWER_BETTER,
+DEMO-KPI-202607-005,1,Attendance,Attendance Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,92
+DEMO-KPI-202607-006,1,Efficiency,Efficiency Performance Achievement,%,100,Demo manufacturing data,100,93,HIGHER_BETTER,
+DEMO-KPI-202607-007,1,Downtime,Downtime Performance Achievement,%,100,Demo manufacturing data,100,92,LOWER_BETTER,
+DEMO-KPI-202607-008,1,Cost,Cost Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,89
+DEMO-KPI-202607-009,1,5S,5S Performance Achievement,%,100,Demo manufacturing data,100,90,HIGHER_BETTER,
+DEMO-KPI-202607-010,1,Kaizen,Kaizen Performance Achievement,%,100,Demo manufacturing data,100,89,LOWER_BETTER,
+DEMO-KPI-202607-011,1,Material,Material Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,86
+DEMO-KPI-202607-012,1,Planning,Planning Performance Achievement,%,100,Demo manufacturing data,100,87,HIGHER_BETTER,
+DEMO-KPI-202607-013,1,Accuracy,Accuracy Performance Achievement,%,100,Demo manufacturing data,100,86,LOWER_BETTER,
+DEMO-KPI-202607-014,1,Lead Time,Lead Time Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,83
+DEMO-KPI-202607-015,1,Defect,Defect Performance Achievement,%,100,Demo manufacturing data,100,84,HIGHER_BETTER,
+DEMO-KPI-202607-016,1,Training,Training Performance Achievement,%,100,Demo manufacturing data,100,83,LOWER_BETTER,
+DEMO-KPI-202607-017,1,Audit,Audit Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,80
+DEMO-KPI-202607-018,1,Inventory,Inventory Performance Achievement,%,100,Demo manufacturing data,100,81,HIGHER_BETTER,
+DEMO-KPI-202607-019,1,Response,Response Performance Achievement,%,100,Demo manufacturing data,100,80,LOWER_BETTER,
+DEMO-KPI-202607-020,1,Compliance,Compliance Performance Achievement,Score,100,Demo manufacturing data,,,MANUAL_SCORE,77

@@ -1,0 +1,2 @@
+﻿form_no,point_no,subject,kpi_objective,uom,weight_percent,source_data,target,actual,calc_type,manual_score
+KPI-202607-001,1,Delivery,On Time Delivery,%,100,Daily Delivery Report,100,96,HIGHER_BETTER,

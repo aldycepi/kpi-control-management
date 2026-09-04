@@ -1,0 +1,21 @@
+﻿employee_code,username,password,full_name,department_code,section,position_name,role_code,active,must_change_password
+DEMO001,demo.user01,DemoPass123!,Demo Employee 01,PPC,Operation,Approver,LEADER,true,true
+DEMO002,demo.user02,DemoPass123!,Demo Employee 02,PROD,Support,Approver,ASSMAN,true,true
+DEMO003,demo.user03,DemoPass123!,Demo Employee 03,QA,Operation,Approver,PLANT_MANAGER,true,true
+DEMO004,demo.user04,DemoPass123!,Demo Employee 04,ENG,Support,Approver,GENERAL_MANAGER,true,true
+DEMO005,demo.user05,DemoPass123!,Demo Employee 05,MTN,Operation,Approver,BOD_KI,true,true
+DEMO006,demo.user06,DemoPass123!,Demo Employee 06,WHS,Support,Approver,BOD_BEI,true,true
+DEMO007,demo.user07,DemoPass123!,Demo Employee 07,MCL,Operation,Staff,STAFF,true,true
+DEMO008,demo.user08,DemoPass123!,Demo Employee 08,PUR,Support,Staff,STAFF,true,true
+DEMO009,demo.user09,DemoPass123!,Demo Employee 09,HRGA,Operation,Staff,STAFF,true,true
+DEMO010,demo.user10,DemoPass123!,Demo Employee 10,FIN,Support,Staff,STAFF,true,true
+DEMO011,demo.user11,DemoPass123!,Demo Employee 11,IT,Operation,Staff,STAFF,true,true
+DEMO012,demo.user12,DemoPass123!,Demo Employee 12,SCM,Support,Staff,STAFF,true,true
+DEMO013,demo.user13,DemoPass123!,Demo Employee 13,PP,Operation,Staff,STAFF,true,true
+DEMO014,demo.user14,DemoPass123!,Demo Employee 14,HA,Support,Staff,STAFF,true,true
+DEMO015,demo.user15,DemoPass123!,Demo Employee 15,VCP,Operation,Staff,STAFF,true,true
+DEMO016,demo.user16,DemoPass123!,Demo Employee 16,RFG,Support,Staff,STAFF,true,true
+DEMO017,demo.user17,DemoPass123!,Demo Employee 17,QC,Operation,Staff,STAFF,true,true
+DEMO018,demo.user18,DemoPass123!,Demo Employee 18,LAB,Support,Staff,STAFF,true,true
+DEMO019,demo.user19,DemoPass123!,Demo Employee 19,EXIM,Operation,Staff,STAFF,true,true
+DEMO020,demo.user20,DemoPass123!,Demo Employee 20,MGMT,Support,Staff,STAFF,true,true
