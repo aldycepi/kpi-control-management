@@ -15,7 +15,8 @@ const mainItems = [
   { to: '/approvals', label: 'Approval Queue', icon: ClipboardCheck },
   { to: '/monitoring', label: 'Not Submitted', icon: Activity },
   { to: '/archive', label: 'Archive & Explorer', icon: Archive },
-  { to: '/notifications', label: 'Notifications', icon: Bell }
+  { to: '/notifications', label: 'Notifications', icon: Bell },
+  { to: '/settings', label: 'My Settings', icon: Settings }
 ];
 
 const adminItems = [
@@ -26,7 +27,7 @@ const adminItems = [
   { to: '/admin/import', label: 'Import Center', icon: FileSpreadsheet },
   { to: '/admin/audit', label: 'Audit Trail', icon: ShieldCheck },
   { to: '/admin/health', label: 'System Health', icon: HeartPulse },
-  { to: '/admin/settings', label: 'Settings', icon: Settings }
+  { to: '/admin/settings', label: 'System Settings', icon: Settings }
 ];
 
 const pageLabels: Record<string, string> = {
@@ -36,6 +37,7 @@ const pageLabels: Record<string, string> = {
   '/monitoring': 'Submission Monitoring',
   '/archive': 'Archive & Explorer',
   '/notifications': 'Notifications',
+  '/settings': 'My Settings',
   '/admin/users': 'User Administration',
   '/admin/departments': 'Department Master',
   '/admin/matrix': 'Approval Matrix',
@@ -51,6 +53,7 @@ export function AppLayout() {
   const [open, setOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('banshu-sidebar-collapsed') === 'true');
   const [unread, setUnread] = useState(0);
+  const [departmentName, setDepartmentName] = useState('Corporate');
   const location = useLocation();
   const currentTitle = useMemo(() => pageLabels[location.pathname] || 'KPI Control Center', [location.pathname]);
 
@@ -73,6 +76,14 @@ export function AppLayout() {
     return () => { supabase.removeChannel(channel); };
   }, [user]);
 
+  useEffect(() => {
+    if (!user?.department_id) { setDepartmentName('Corporate'); return; }
+    let active = true;
+    supabase.from('departments').select('department_name').eq('id', user.department_id).maybeSingle()
+      .then(({ data }) => { if (active) setDepartmentName(data?.department_name || user.section || 'Corporate'); });
+    return () => { active = false; };
+  }, [user?.department_id, user?.section]);
+
   return <div className={cn('app-shell fluent-app', collapsed && 'sidebar-collapsed')}>
     <aside className={cn('sidebar fluent-sidebar', open && 'sidebar-open', collapsed && 'is-collapsed')}>
       <div className="brand-panel">
@@ -84,7 +95,7 @@ export function AppLayout() {
 
       <div className="sidebar-context">
         <div className="context-icon"><Factory size={18}/></div>
-        <div className="context-copy"><span>Plant environment</span><strong>Production · Online</strong></div>
+        <div className="context-copy"><span>Department</span><strong title={departmentName}>{departmentName} · Online</strong></div>
         <i/>
       </div>
 

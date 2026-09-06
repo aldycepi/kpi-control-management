@@ -239,3 +239,20 @@ body{font-family:Inter,"Segoe UI",Arial,sans-serif}
 .sidebar-collapse-toggle{border-color:rgba(255,183,24,.20);background:rgba(255,255,255,.045);color:#d8d2c7}
 .sidebar-collapse-toggle:hover{background:rgba(255,183,24,.13);border-color:rgba(255,183,24,.36);color:var(--gold)}
 .sidebar-collapsed .sidebar-collapse-toggle{background:#1b1c1f;border-color:rgba(255,183,24,.38);box-shadow:0 8px 24px rgba(0,0,0,.28)}
+
+
+/* V2.2.2 — notification deep-link, dynamic department context, personal settings */
+.context-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:170px}
+.notification-list>div.unread{background:#FFF9E9;box-shadow:inset 3px 0 0 var(--gold)}
+.notif-icon{background:#FFF1C7;color:#8A6200;border:1px solid #F2D58D}
+.notification-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;flex-wrap:wrap}
+.notification-actions .btn{min-height:34px;padding:7px 10px}
+.settings-profile-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(340px,.65fr);gap:16px;align-items:start}
+.settings-form{display:flex;flex-direction:column;gap:15px}
+.settings-section-title{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;background:#FFF8E8;border:1px solid #F0DDA9;color:var(--navy)}
+.settings-section-title>svg{color:#956900;flex:none}.settings-section-title strong,.settings-section-title span{display:block}.settings-section-title strong{font-size:12px}.settings-section-title span{font-size:9px;color:#746A58;margin-top:2px}
+.account-readonly-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.account-readonly-grid>div{padding:10px 11px;border:1px solid #E6E0D5;border-radius:8px;background:#FBFAF6;min-width:0}.account-readonly-grid span,.account-readonly-grid strong{display:block}.account-readonly-grid span{font-size:8px;text-transform:uppercase;letter-spacing:.06em;color:#84807A;font-weight:850}.account-readonly-grid strong{font-size:10px;color:#2E3745;margin-top:5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.settings-actions{display:flex;justify-content:flex-end;padding-top:2px}.settings-security-note{display:flex;align-items:flex-start;gap:8px;border:1px solid #CFE5DE;background:#F1FAF7;color:#316B61;border-radius:8px;padding:10px 11px;font-size:9.5px;line-height:1.5}.settings-security-note svg{flex:none;color:var(--green)}
+@media(max-width:1100px){.settings-profile-grid{grid-template-columns:1fr}.account-readonly-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.notification-actions{grid-column:2;justify-content:flex-start}.account-readonly-grid{grid-template-columns:1fr}.settings-actions .btn{width:100%}}

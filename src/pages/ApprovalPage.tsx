@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CheckCircle2, Eye, RefreshCw, XCircle } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { supabase } from '../lib/supabase';
 import type { ApprovalHistory, KpiForm, KpiPoint } from '../lib/types';
@@ -15,6 +16,8 @@ export function ApprovalPage() {
   const [detail, setDetail] = useState<Detail | null>(null);
   const [note, setNote] = useState('');
   const [reviewing, setReviewing] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const directOpened = useRef<string | null>(null);
 
   const load = async () => {
     setLoading(true);
@@ -26,12 +29,37 @@ export function ApprovalPage() {
   };
   useEffect(() => { load(); }, [period]);
 
-  const open = async (id: string) => {
+  const open = async (id: string, notificationId?: string | null) => {
     try {
       const { data, error } = await supabase.rpc('get_form_detail_v2', { p_form_id: id });
       if (error) throw error;
-      setDetail(data as Detail); setNote('');
+      setDetail(data as Detail);
+      setNote('');
+      if (notificationId) {
+        const { error: notificationError } = await supabase.from('notifications')
+          .update({ read_at: new Date().toISOString() })
+          .eq('id', notificationId)
+          .eq('form_id', id);
+        if (notificationError) toast.error(`Dokumen terbuka, tetapi status notifikasi gagal diperbarui: ${notificationError.message}`);
+        else setSearchParams({ form: id }, { replace: true });
+      }
     } catch (error: any) { toast.error(error.message); }
+  };
+
+  useEffect(() => {
+    const formId = searchParams.get('form');
+    const notificationId = searchParams.get('notification');
+    if (!formId || directOpened.current === formId) return;
+    directOpened.current = formId;
+    open(formId, notificationId);
+  }, [searchParams]);
+
+  const closeDetail = () => {
+    setDetail(null);
+    if (searchParams.get('form')) {
+      directOpened.current = null;
+      setSearchParams({}, { replace: true });
+    }
   };
 
   const review = async (action: 'APPROVE'|'REJECT') => {
@@ -42,7 +70,7 @@ export function ApprovalPage() {
       const { data, error } = await supabase.rpc('review_kpi_form', { p_form_id: detail.form.id, p_action: action, p_note: note.trim() });
       if (error) throw error;
       toast.success(data?.message || 'Approval berhasil diproses.');
-      setDetail(null); await load();
+      closeDetail(); await load();
     } catch (error: any) { toast.error(error.message); } finally { setReviewing(false); }
   };
 
@@ -55,7 +83,7 @@ export function ApprovalPage() {
       </DataTable> : <EmptyState title="Approval queue kosong" description="Tidak ada KPI yang membutuhkan tindakan Anda pada periode ini."/>}
     </Card>
 
-    <Modal open={Boolean(detail)} title={detail ? `${detail.form.form_no} · ${detail.form.full_name}` : ''} onClose={() => setDetail(null)} wide footer={<><Button variant="ghost" onClick={() => setDetail(null)}>Close</Button><Button variant="danger" loading={reviewing} onClick={() => review('REJECT')}><XCircle size={17}/> Reject</Button><Button variant="success" loading={reviewing} onClick={() => review('APPROVE')}><CheckCircle2 size={17}/> Approve Stage</Button></>}>
+    <Modal open={Boolean(detail)} title={detail ? `${detail.form.form_no} · ${detail.form.full_name}` : ''} onClose={closeDetail} wide footer={<><Button variant="ghost" onClick={closeDetail}>Close</Button><Button variant="danger" loading={reviewing} onClick={() => review('REJECT')}><XCircle size={17}/> Reject</Button><Button variant="success" loading={reviewing} onClick={() => review('APPROVE')}><CheckCircle2 size={17}/> Approve Stage</Button></>}>
       {detail && <div className="detail-stack">
         <div className="detail-meta-grid"><div><span>Status</span><Badge>{detail.form.status}</Badge></div><div><span>Current Stage</span><strong>{detail.form.current_stage}</strong></div><div><span>Department</span><strong>{detail.form.department_name}</strong></div><div><span>Final Score</span><strong>{formatNumber(detail.form.final_score,2)}</strong></div></div>
         <DataTable headers={['No','Subject','KPI Objective','Weight','Target','Actual','Achievement','Score']}>

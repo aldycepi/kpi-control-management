@@ -55,12 +55,12 @@ export function ChangePasswordPage() {
   return <div className="password-reset-page">
     <form className="password-reset-card" onSubmit={submit}>
       <div className="brand-emblem large"><KeyRound/></div>
-      <span className="eyebrow">MANDATORY SECURITY STEP</span>
+      <span className="eyebrow">OPTIONAL SECURITY</span>
       <h1>Change Your Password</h1>
-      <p>Administrator issued a temporary password. Replace it before entering the KPI control center.</p>
+      <p>Ubah password kapan saja sesuai kebutuhan keamanan akun Anda.</p>
       <Field label="New Password"><Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} minLength={8} autoComplete="new-password" required/></Field>
       <Field label="Confirm Password"><Input type="password" value={confirm} onChange={(event) => setConfirm(event.target.value)} minLength={8} autoComplete="new-password" required/></Field>
-      <Button type="submit" loading={saving}><ShieldCheck size={17}/> Activate New Password</Button>
+      <Button type="submit" loading={saving}><ShieldCheck size={17}/> Update Password</Button>
     </form>
   </div>;
 }

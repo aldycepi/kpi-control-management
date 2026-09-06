@@ -3,6 +3,9 @@
 ./.gitignore
 ./.npmrc
 ./CSV_EXCEL_IMPORT.md
+./DMS_UI_UX_PATCH_V2.2.1.md
+./DMS_UI_UX_PATCH_V2.2.2.md
+./DMS_UI_UX_REVISION_V2.2.md
 ./README.md
 ./SOURCE_MANIFEST.txt
 ./UPLOAD_MANIFEST.txt
@@ -97,6 +100,7 @@
 ./src/pages/MonitoringPage.tsx
 ./src/pages/MyKpiPage.tsx
 ./src/pages/NotificationsPage.tsx
+./src/pages/PersonalSettingsPage.tsx
 ./src/pages/SetupPage.tsx
 ./src/styles.css
 ./src/vite-env.d.ts
@@ -109,6 +113,7 @@
 ./supabase/migrations/0005_dashboard_aggregate_fix.sql
 ./supabase/migrations/0006_v2_branding_runtime.sql
 ./supabase/migrations/0007_demo_approval_seed.sql
+./supabase/migrations/0008_dms_ui_global_search.sql
 ./templates/Banshu_KPI_Dummy_Correlated_50.zip
 ./templates/Banshu_KPI_Dummy_Correlated_50_Master.xlsx
 ./templates/NEW_FORMAT_KPI.xlsx

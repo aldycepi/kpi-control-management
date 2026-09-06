@@ -12,7 +12,7 @@ const ApprovalPage = lazy(() => import('../pages/ApprovalPage').then((module) =>
 const MonitoringPage = lazy(() => import('../pages/MonitoringPage').then((module) => ({ default: module.MonitoringPage })));
 const ArchivePage = lazy(() => import('../pages/ArchivePage').then((module) => ({ default: module.ArchivePage })));
 const NotificationsPage = lazy(() => import('../pages/NotificationsPage').then((module) => ({ default: module.NotificationsPage })));
-const ChangePasswordPage = lazy(() => import('../pages/ChangePasswordPage').then((module) => ({ default: module.ChangePasswordPage }))); 
+const PersonalSettingsPage = lazy(() => import('../pages/PersonalSettingsPage').then((module) => ({ default: module.PersonalSettingsPage })));
 const UsersAdminPage = lazy(() => import('../pages/AdminPages').then((module) => ({ default: module.UsersAdminPage })));
 const DepartmentsAdminPage = lazy(() => import('../pages/AdminPages').then((module) => ({ default: module.DepartmentsAdminPage })));
 const MatrixAdminPage = lazy(() => import('../pages/AdminPages').then((module) => ({ default: module.MatrixAdminPage })));
@@ -23,10 +23,9 @@ const HealthAdminPage = lazy(() => import('../pages/AdminPages').then((module) =
 const SettingsAdminPage = lazy(() => import('../pages/AdminPages').then((module) => ({ default: module.SettingsAdminPage })));
 
 function Protected() {
-  const { session, user, loading } = useAuth();
+  const { session, loading } = useAuth();
   if (loading) return <div className="full-loading"><LoadingBlock label="Initializing control center..."/></div>;
   if (!session) return <Navigate to="/login" replace />;
-  if (user?.must_change_password) return <Navigate to="/change-password" replace />;
   return <AppLayout />;
 }
 
@@ -35,20 +34,12 @@ function AdminRoute({ children }: { children: React.ReactNode }) {
   return user?.role_code === 'ADMIN' ? children : <Navigate to="/" replace />;
 }
 
-function PasswordRoute() {
-  const { session, user, loading } = useAuth();
-  if (loading) return <div className="full-loading"><LoadingBlock label="Validating security session..."/></div>;
-  if (!session) return <Navigate to="/login" replace />;
-  if (!user?.must_change_password) return <Navigate to="/" replace />;
-  return <ChangePasswordPage/>;
-}
 
 export function App() {
   return <Suspense fallback={<div className="full-loading"><LoadingBlock label="Loading application module..."/></div>}>
     <Routes>
       <Route path="/login" element={<LoginPage/>}/>
       <Route path="/setup" element={<SetupPage/>}/>
-      <Route path="/change-password" element={<PasswordRoute/>}/>
       <Route element={<Protected/>}>
         <Route index element={<DashboardPage/>}/>
         <Route path="my-kpi" element={<MyKpiPage/>}/>
@@ -56,6 +47,8 @@ export function App() {
         <Route path="monitoring" element={<MonitoringPage/>}/>
         <Route path="archive" element={<ArchivePage/>}/>
         <Route path="notifications" element={<NotificationsPage/>}/>
+        <Route path="settings" element={<PersonalSettingsPage/>}/>
+        <Route path="change-password" element={<Navigate to="/settings" replace/>}/>
         <Route path="admin/users" element={<AdminRoute><UsersAdminPage/></AdminRoute>}/>
         <Route path="admin/departments" element={<AdminRoute><DepartmentsAdminPage/></AdminRoute>}/>
         <Route path="admin/matrix" element={<AdminRoute><MatrixAdminPage/></AdminRoute>}/>

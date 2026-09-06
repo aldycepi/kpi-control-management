@@ -17,7 +17,7 @@
   "vars": {
     "APP_NAME": "Executive KPI Manufacturing Control Center",
     "COMPANY_NAME": "PT BANSHU ELECTRIC INDONESIA",
-    "APP_VERSION": "2.1.6",
+    "APP_VERSION": "2.2.2",
     "APP_ENV": "production"
   }
 }

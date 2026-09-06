@@ -356,119 +356,117 @@ function drawSingleSignature(
 }
 
 
-type ApprovalColumnMode = 'qr' | 'initials';
-
 function drawApprovalRouteColumn(
   page: PDFPage,
   regular: PDFFont,
   bold: PDFFont,
   heading: string,
-  stageLabel: string,
   stage: string,
   signer: Signer | null,
-  mode: ApprovalColumnMode,
   x: number,
   top: number,
   width: number,
   height: number
 ) {
   drawTopRect(page, x, top, width, height, { color: WHITE, borderColor: BORDER, borderWidth: 0.65 });
-  drawTopRect(page, x, top, width, 20, { color: SOFT_GREY, borderColor: BORDER, borderWidth: 0.65 });
-  drawCellText(page, bold, heading, x + 2, top + 1, width - 4, 13, {
-    fontSize: 6.8,
-    minFontSize: 5.6,
+  drawTopRect(page, x, top, width, 19, { color: SOFT_GREY, borderColor: BORDER, borderWidth: 0.65 });
+  drawCellText(page, bold, heading, x + 3, top + 2, width - 6, 15, {
+    fontSize: 7.2,
+    minFontSize: 6.2,
     maxLines: 1,
     align: 'center'
-  });
-  drawCellText(page, regular, stageLabel, x + 2, top + 12, width - 4, 8, {
-    fontSize: 4.4,
-    minFontSize: 3.8,
-    maxLines: 1,
-    align: 'center',
-    color: MUTED
   });
 
   if (!signer) {
-    drawCellText(page, bold, 'PENDING', x + 3, top + 50, width - 6, 20, {
-      fontSize: 6.3,
+    drawCellText(page, bold, 'PENDING', x + 4, top + 48, width - 8, 22, {
+      fontSize: 7.0,
       maxLines: 1,
       align: 'center',
       color: MUTED
     });
-    drawCellText(page, regular, mode === 'initials' ? 'Paraf / nama belum tersedia' : 'Digital approval belum tersedia', x + 5, top + 73, width - 10, 22, {
-      fontSize: 4.5,
-      minFontSize: 3.8,
-      maxLines: 2,
-      align: 'center',
-      color: MUTED
-    });
-    return;
-  }
-
-  if (mode === 'initials') {
-    const parafWidth = Math.min(38, Math.max(30, width * 0.34));
-    const parafHeight = 28;
-    const parafX = x + (width - parafWidth) / 2;
-    const parafTop = top + 35;
-    drawTopRect(page, parafX, parafTop, parafWidth, parafHeight, {
-      color: SIGNED_GREY,
-      borderColor: BORDER,
-      borderWidth: 0.55
-    });
-    drawCellText(page, bold, initials(signer.name), parafX, parafTop, parafWidth, parafHeight, {
-      fontSize: 10.5,
-      minFontSize: 8,
-      maxLines: 1,
-      align: 'center'
-    });
-    const nameTop = parafTop + parafHeight + 5;
-    drawCellText(page, bold, signer.name, x + 4, nameTop, width - 8, 24, {
-      fontSize: 5.6,
+    drawCellText(page, regular, 'Digital approval belum tersedia', x + 8, top + 72, width - 16, 22, {
+      fontSize: 5.0,
       minFontSize: 4.2,
       maxLines: 2,
-      align: 'center'
-    });
-    drawCellText(page, regular, roleLabel(signer.role), x + 4, nameTop + 24, width - 8, 11, {
-      fontSize: 4.5,
-      minFontSize: 3.8,
-      maxLines: 1,
-      align: 'center',
-      color: MUTED
-    });
-    drawCellText(page, regular, isoDate(signer.createdAt), x + 4, nameTop + 35, width - 8, 10, {
-      fontSize: 4.3,
-      minFontSize: 3.7,
-      maxLines: 1,
       align: 'center',
       color: MUTED
     });
     return;
   }
 
-  const qrSize = Math.max(37, Math.min(46, width - 30, height - 88));
+  const qrSize = Math.max(34, Math.min(50, width - 38, height - 66));
   const qrX = x + (width - qrSize) / 2;
-  const qrTop = top + 27;
+  const qrTop = top + 24;
   drawQrCode(page, qrPayload(stage, signer), qrX, qrTop, qrSize);
+
   const nameTop = qrTop + qrSize + 4;
-  drawCellText(page, bold, signer.name, x + 4, nameTop, width - 8, 22, {
-    fontSize: 5.6,
-    minFontSize: 4.2,
+  drawCellText(page, bold, signer.name, x + 6, nameTop, width - 12, 16, {
+    fontSize: 7.0,
+    minFontSize: 5.8,
     maxLines: 2,
     align: 'center'
   });
-  drawCellText(page, regular, roleLabel(signer.role), x + 4, nameTop + 22, width - 8, 11, {
-    fontSize: 4.5,
-    minFontSize: 3.8,
+  drawCellText(page, regular, roleLabel(signer.role), x + 6, nameTop + 16, width - 12, 10, {
+    fontSize: 5.7,
+    minFontSize: 4.8,
     maxLines: 1,
     align: 'center',
     color: MUTED
   });
-  drawCellText(page, regular, isoDate(signer.createdAt), x + 4, nameTop + 33, width - 8, 10, {
-    fontSize: 4.3,
-    minFontSize: 3.7,
+  drawCellText(page, regular, isoDate(signer.createdAt), x + 6, nameTop + 26, width - 12, 10, {
+    fontSize: 5.3,
+    minFontSize: 4.6,
     maxLines: 1,
     align: 'center',
     color: MUTED
+  });
+}
+
+function drawCheckStrip(
+  page: PDFPage,
+  regular: PDFFont,
+  bold: PDFFont,
+  label: string,
+  signer: Signer | null,
+  x: number,
+  top: number,
+  width: number,
+  height: number
+) {
+  drawTopRect(page, x, top, width, height, { color: WHITE, borderColor: BORDER, borderWidth: 0.58 });
+  drawCellText(page, bold, label, x + 6, top + 2, 58, height - 4, {
+    fontSize: 5.7,
+    minFontSize: 5.0,
+    maxLines: 1,
+    align: 'left'
+  });
+
+  if (!signer) {
+    drawCellText(page, regular, 'PENDING', x + 66, top + 2, width - 108, height - 4, {
+      fontSize: 5.2,
+      maxLines: 1,
+      align: 'left',
+      color: MUTED
+    });
+    return;
+  }
+
+  drawCellText(page, regular, `${safeText(signer.name)} | ${isoDate(signer.createdAt)}`, x + 66, top + 2, width - 111, height - 4, {
+    fontSize: 5.4,
+    minFontSize: 4.7,
+    maxLines: 1,
+    align: 'left',
+    color: TEXT
+  });
+
+  const markWidth = 30;
+  const markX = x + width - markWidth - 6;
+  drawTopRect(page, markX, top + 3, markWidth, height - 6, { color: SIGNED_GREY, borderColor: BORDER, borderWidth: 0.5 });
+  drawCellText(page, bold, initials(signer.name), markX, top + 3, markWidth, height - 6, {
+    fontSize: 8.2,
+    minFontSize: 7,
+    maxLines: 1,
+    align: 'center'
   });
 }
 
@@ -657,37 +655,34 @@ export async function buildOfficialKpiPdf(
   drawCellText(page, bold, `Bobot ${numberText(form.total_weight)}%`, MARGIN_X + 470, totalTop, 150, totalHeight, { fontSize: 6.2, maxLines: 1, align: 'right', color: WHITE });
   drawCellText(page, bold, `Final Score ${numberText(form.final_score)}`, MARGIN_X + 620, totalTop, CONTENT_WIDTH - 620, totalHeight, { fontSize: 6.4, maxLines: 1, align: 'right', color: WHITE });
 
-  // Approval route is intentionally rendered in the same order as the legacy KPI form.
+  // Approval route keeps the existing six-stage workflow, but Checked 1 and Checked 2
+  // are rendered only as compact sign-off marks, not as approval columns.
   // BUSINESS FLOW (RIGHT -> LEFT):
-  // Dibuat -> Checked 1 -> Diperiksa (Approval 1) -> Diketahui (Approval 2)
-  // -> Disetujui (Approval 3) -> Checked 2 -> Disetujui (Approval 4).
-  // VISUAL COLUMNS (LEFT -> RIGHT) are therefore the exact reverse order.
-  const approvalTop = checkedTop;
-  const signatureHeight = PAGE_HEIGHT - approvalTop - 24;
+  // Dibuat -> Checked 1 -> Diperiksa -> Diketahui -> Disetujui -> Checked 2 -> Disetujui.
+  // The main QR approval columns therefore remain: Disetujui | Disetujui | Diketahui | Diperiksa | Dibuat.
   const prepared = submitterSigner(detail);
-  const approvalColumns: Array<{
-    heading: string;
-    stageLabel: string;
-    stage: string;
-    signer: Signer | null;
-    mode: ApprovalColumnMode;
-  }> = [
-    { heading: 'Disetujui', stageLabel: 'Approval 4', stage: 'Approval4', signer: findStageSigner(history, 'Approval4'), mode: 'qr' },
-    { heading: 'Checked 2', stageLabel: 'Paraf / Nama', stage: 'Checked2', signer: findStageSigner(history, 'Checked2'), mode: 'initials' },
-    { heading: 'Disetujui', stageLabel: 'Approval 3', stage: 'Approval3', signer: findStageSigner(history, 'Approval3'), mode: 'qr' },
-    { heading: 'Diketahui', stageLabel: 'Approval 2', stage: 'Approval2', signer: findStageSigner(history, 'Approval2'), mode: 'qr' },
-    { heading: 'Diperiksa', stageLabel: 'Approval 1', stage: 'Approval1', signer: findStageSigner(history, 'Approval1'), mode: 'qr' },
-    { heading: 'Checked 1', stageLabel: 'Paraf / Nama', stage: 'Checked1', signer: findStageSigner(history, 'Checked1'), mode: 'initials' },
-    { heading: 'Dibuat', stageLabel: 'Staff / Leader', stage: 'Submitter', signer: prepared, mode: 'qr' }
+  const checked1 = findStageSigner(history, 'Checked1');
+  const checked2 = findStageSigner(history, 'Checked2');
+
+  const checkGap = 8;
+  const checkWidth = (CONTENT_WIDTH - checkGap) / 2;
+  drawCheckStrip(page, regular, bold, 'Checked 2', checked2, MARGIN_X, checkedTop, checkWidth, checkedHeight);
+  drawCheckStrip(page, regular, bold, 'Checked 1', checked1, MARGIN_X + checkWidth + checkGap, checkedTop, checkWidth, checkedHeight);
+
+  const approvalTop = signatureTop;
+  const signatureHeight = PAGE_HEIGHT - approvalTop - 24;
+  const approvalColumns: Array<{ heading: string; stage: string; signer: Signer | null }> = [
+    { heading: 'Disetujui', stage: 'Approval4', signer: findStageSigner(history, 'Approval4') },
+    { heading: 'Disetujui', stage: 'Approval3', signer: findStageSigner(history, 'Approval3') },
+    { heading: 'Diketahui', stage: 'Approval2', signer: findStageSigner(history, 'Approval2') },
+    { heading: 'Diperiksa', stage: 'Approval1', signer: findStageSigner(history, 'Approval1') },
+    { heading: 'Dibuat', stage: 'Submitter', signer: prepared }
   ];
-  const approvalGap = 4;
+  const approvalGap = 5;
   const approvalWidth = (CONTENT_WIDTH - approvalGap * (approvalColumns.length - 1)) / approvalColumns.length;
   approvalColumns.forEach((column, index) => {
     const columnX = MARGIN_X + index * (approvalWidth + approvalGap);
-    drawApprovalRouteColumn(
-      page, regular, bold, column.heading, column.stageLabel, column.stage, column.signer, column.mode,
-      columnX, approvalTop, approvalWidth, signatureHeight
-    );
+    drawApprovalRouteColumn(page, regular, bold, column.heading, column.stage, column.signer, columnX, approvalTop, approvalWidth, signatureHeight);
   });
 
   page.drawText(`Generated by ${safeText(generatedBy.full_name || '-')}`, { x: MARGIN_X, y: 8, size: 3.7, font: regular, color: MUTED });

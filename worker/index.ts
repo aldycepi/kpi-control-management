@@ -32,6 +32,8 @@ type AppUser = {
   department_id: string | null;
   section: string | null;
   position_name: string | null;
+  academic: string | null;
+  join_date: string | null;
   role_code: string;
   active: boolean;
   must_change_password: boolean;
@@ -266,7 +268,7 @@ async function authenticate(c: any): Promise<Response | null> {
 
   const { response, data } = await rest(
     c.env,
-    `users?auth_user_id=eq.${encodeURIComponent(authUser.id)}&select=id,auth_user_id,employee_code,username,email,full_name,department_id,section,position_name,role_code,active,must_change_password&limit=1`,
+    `users?auth_user_id=eq.${encodeURIComponent(authUser.id)}&select=id,auth_user_id,employee_code,username,email,full_name,department_id,section,position_name,academic,join_date,role_code,active,must_change_password&limit=1`,
     {},
     'service'
   );
@@ -502,6 +504,32 @@ app.post('/api/auth/login', async (c) => {
 });
 
 app.get('/api/me', requireAuth, async (c) => c.json({ ok: true, user: c.get('appUser') }));
+
+app.patch('/api/me/profile', requireAuth, async (c) => {
+  const parsed = z.object({
+    full_name: z.string().trim().min(1).max(120),
+    academic: z.string().trim().max(160).nullable().optional(),
+    join_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).nullable().optional()
+  }).safeParse(await c.req.json().catch(() => null));
+  if (!parsed.success) return c.json({ ok: false, message: 'Data profil tidak valid.', issues: parsed.error.issues }, 400);
+
+  const user = c.get('appUser');
+  const payload = {
+    full_name: parsed.data.full_name,
+    academic: parsed.data.academic || null,
+    join_date: parsed.data.join_date || null,
+    updated_at: new Date().toISOString()
+  };
+  const updated = await rest(c.env, `users?id=eq.${encodeURIComponent(user.id)}`, {
+    method: 'PATCH',
+    headers: { Prefer: 'return=representation' },
+    body: JSON.stringify(payload)
+  }, 'service');
+  if (!updated.response.ok) return c.json({ ok: false, message: updated.data?.message || 'Gagal memperbarui profil.' }, 400);
+
+  await audit(c.env, user, 'UPDATE_SELF_PROFILE', 'users', { id: user.id, ...payload });
+  return c.json({ ok: true, user: updated.data?.[0] || null, message: 'Informasi pribadi berhasil diperbarui.' });
+});
 
 
 async function completePasswordChange(c: any) {
@@ -786,7 +814,7 @@ app.post('/api/admin/users', requireAdmin, async (c) => {
     academic: input.academic || null,
     join_date: input.join_date || null,
     active: input.active ?? true,
-    must_change_password: !input.id,
+    must_change_password: false,
     updated_by: actor.id,
     ...(input.id ? {} : { created_by: actor.id })
   };
@@ -853,7 +881,7 @@ app.post('/api/admin/users/:id/reset-password', requireAdmin, async (c) => {
   });
   if (!response.ok) return c.json({ ok: false, message: (await readJsonSafe(response))?.message || 'Reset password gagal.' }, 400);
   await rest(c.env, `users?id=eq.${encodeURIComponent(id)}`, {
-    method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ must_change_password: true })
+    method: 'PATCH', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ must_change_password: false })
   });
   await audit(c.env, c.get('appUser'), 'RESET_PASSWORD', 'users', { id });
   return c.json({ ok: true, message: 'Password berhasil direset.' });
@@ -1079,7 +1107,7 @@ app.post('/api/admin/users/import', requireAdmin, async (c) => {
         position_name: String(raw.position_name || '').trim() || null,
         role_code: roleCode,
         active: importBoolean(raw.active, true),
-        must_change_password: importBoolean(raw.must_change_password, existing ? Boolean(existing.must_change_password) : true),
+        must_change_password: false,
         updated_by: actor.id,
         updated_at: new Date().toISOString(),
         ...(existing ? {} : { created_by: actor.id })

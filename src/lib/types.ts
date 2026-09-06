@@ -12,6 +12,8 @@ export interface AppUser {
   department_name?: string | null;
   section: string | null;
   position_name: string | null;
+  academic?: string | null;
+  join_date?: string | null;
   role_code: RoleCode;
   active: boolean;
   must_change_password: boolean;
@@ -56,6 +58,8 @@ export interface KpiForm {
   department_name: string | null;
   section: string | null;
   position_name: string | null;
+  academic?: string | null;
+  join_date?: string | null;
   role_code: RoleCode;
   form_title: string;
   total_weight: number;
