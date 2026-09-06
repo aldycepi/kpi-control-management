@@ -64,6 +64,6 @@ export function Modal({ open, title, onClose, footer, children, wide = false }: 
   </div></div>;
 }
 
-export function DataTable({ headers, children }: { headers: string[]; children: React.ReactNode }) {
-  return <div className="table-wrap"><table><thead><tr>{headers.map((h) => <th key={h}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
+export function DataTable({ headers, children }: { headers: React.ReactNode[]; children: React.ReactNode }) {
+  return <div className="table-wrap"><table><thead><tr>{headers.map((h, index) => <th key={index}>{h}</th>)}</tr></thead><tbody>{children}</tbody></table></div>;
 }

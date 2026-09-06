@@ -1,4 +1,4 @@
-# Upload KPI Management Control V2.2.2 to GitHub
+# Upload KPI Management Control V2.2.3 to GitHub
 
 Upload the contents of this folder directly to the repository root.
 
@@ -26,33 +26,36 @@ dist/
 *.tsbuildinfo
 ```
 
-## V2.2.2 patch scope
+## V2.2.3 patch scope
 
-Primary changed files:
+Primary changed files versus V2.2.2:
 
 ```text
-worker/officialPdf.ts
-worker/index.ts
-src/app/App.tsx
-src/components/Layout.tsx
-src/lib/types.ts
-src/pages/AdminPages.tsx
 src/pages/ApprovalPage.tsx
-src/pages/ChangePasswordPage.tsx
-src/pages/NotificationsPage.tsx
-src/pages/PersonalSettingsPage.tsx
+src/components/UI.tsx
 src/styles.css
 package.json
 wrangler.jsonc
-DMS_UI_UX_PATCH_V2.2.2.md
+SOURCE_MANIFEST.txt
+UPLOAD_MANIFEST.txt
+DMS_UI_UX_PATCH_V2.2.3.md
+UPLOAD_TO_GITHUB.md
 ```
 
 ## Supabase
 
-V2.2.2 introduces no new database migration and does not require `INSTALL_ALL.sql`.
+V2.2.3 introduces no new database migration and does not require `INSTALL_ALL.sql`.
 
-If the existing production database already contains the V2.2 global-search function (`global_kpi_search_v1`), do not run any SQL for this patch.
+The multiple approval action reuses the existing `review_kpi_form` RPC one form at a time. Existing server-side approval authorization, audit history, routing, and notification generation remain in control.
 
 ## Deploy
 
-Commit/push the updated source to the GitHub branch connected to Cloudflare. Cloudflare can then rebuild and redeploy the application using the existing runtime variables and Supabase project.
+Commit/push the updated source to the GitHub branch connected to Cloudflare. Cloudflare can rebuild and redeploy with the existing runtime variables and existing Supabase project.
+
+After deployment, test with 2–3 non-critical KPI forms first:
+1. select multiple forms,
+2. open the confirmation modal,
+3. approve,
+4. confirm each approved form advances to the next stage,
+5. confirm audit history is created for each form,
+6. confirm the current user's corresponding pending notification is read.
