@@ -1,0 +1,1 @@
+{"root":["./worker/index.ts","./worker/officialPdf.ts","./worker/qrMatrix.ts"],"errors":true,"version":"5.8.3"}

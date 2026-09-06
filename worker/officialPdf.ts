@@ -214,6 +214,21 @@ function findStageSigner(history: Array<Record<string, any>>, stage: string): Si
   };
 }
 
+
+function findRoleSigner(history: Array<Record<string, any>>, role: string): Signer | null {
+  const allowed = new Set(['SUBMIT', 'CHECKED', 'APPROVED']);
+  const entry = [...history].reverse().find((item) =>
+    String(item.actor_role_code || '').toUpperCase() === role.toUpperCase() &&
+    allowed.has(String(item.action || '').toUpperCase())
+  );
+  if (!entry) return null;
+  return {
+    name: safeText(entry.actor_name) || '-', role: safeText(entry.actor_role_code) || role,
+    action: safeText(entry.action) || 'SIGNED', createdAt: entry.created_at || null,
+    signatureToken: entry.signature_token || null
+  };
+}
+
 function submitterSigner(detail: OfficialPdfDetail): Signer {
   const history = Array.isArray(detail.history) ? detail.history : [];
   const form = detail.form || {};
@@ -319,26 +334,24 @@ function drawSingleSignature(
   height: number
 ) {
   drawTopRect(page, x, top, width, height, { color: WHITE, borderColor: BORDER, borderWidth: 0.65 });
-  drawTopRect(page, x, top, width, 16, { color: SOFT_GREY, borderColor: BORDER, borderWidth: 0.65 });
-  drawCellText(page, bold, heading, x, top + 1, width, 14, { fontSize: 6.2, maxLines: 1, align: 'center' });
+  drawTopRect(page, x, top, width, 18, { color: SOFT_GREY, borderColor: BORDER, borderWidth: 0.65 });
+  drawCellText(page, bold, heading, x, top + 1, width, 16, { fontSize: 7.1, maxLines: 1, align: 'center' });
   if (!signer) {
-    drawCellText(page, bold, 'PENDING', x, top + 26, width, 30, { fontSize: 7, maxLines: 1, align: 'center', color: MUTED });
-    drawCellText(page, regular, 'No digital approval', x, top + 50, width, 18, { fontSize: 4.8, maxLines: 1, align: 'center', color: MUTED });
+    drawCellText(page, bold, 'PENDING', x, top + 43, width, 30, { fontSize: 7.4, maxLines: 1, align: 'center', color: MUTED });
+    drawCellText(page, regular, 'No digital approval', x, top + 71, width, 18, { fontSize: 5.2, maxLines: 1, align: 'center', color: MUTED });
     return;
   }
 
-  const qrSize = Math.max(31, Math.min(48, height - 45));
-  drawQrCode(page, qrPayload(stage, signer), x + 10, top + 22, qrSize);
-  const textX = x + qrSize + 18;
-  const textWidth = width - qrSize - 25;
-  drawCellText(page, bold, signer.name, textX, top + 20, textWidth, 19, { fontSize: 6.1, minFontSize: 4.4, maxLines: 2 });
-  drawCellText(page, regular, roleLabel(signer.role), textX, top + 39, textWidth, 13, { fontSize: 5, maxLines: 1, color: MUTED });
-  drawCellText(page, regular, isoDate(signer.createdAt), textX, top + 52, textWidth, 13, { fontSize: 4.8, maxLines: 1, color: MUTED });
-  drawCellText(page, regular, `QR ${safeText(signer.signatureToken || '').slice(0, 10)}`, textX, top + 65, textWidth, height - 66, {
-    fontSize: 4,
-    minFontSize: 3.5,
-    maxLines: 1,
-    color: MUTED
+  const qrSize = Math.max(38, Math.min(54, height - 82));
+  const qrX = x + (width - qrSize) / 2;
+  const qrTop = top + 25;
+  drawQrCode(page, qrPayload(stage, signer), qrX, qrTop, qrSize);
+  const nameTop = qrTop + qrSize + 4;
+  drawCellText(page, bold, signer.name, x + 5, nameTop, width - 10, 20, { fontSize: 6.6, minFontSize: 5.0, maxLines: 2, align: 'center' });
+  drawCellText(page, regular, roleLabel(signer.role), x + 5, nameTop + 20, width - 10, 12, { fontSize: 5.4, minFontSize: 4.5, maxLines: 1, align: 'center', color: MUTED });
+  drawCellText(page, regular, isoDate(signer.createdAt), x + 5, nameTop + 32, width - 10, 11, { fontSize: 4.9, maxLines: 1, align: 'center', color: MUTED });
+  drawCellText(page, regular, `QR ${safeText(signer.signatureToken || '').slice(0, 10)}`, x + 5, nameTop + 43, width - 10, Math.max(9, height - (nameTop - top) - 44), {
+    fontSize: 4.1, minFontSize: 3.6, maxLines: 1, align: 'center', color: MUTED
   });
 }
 
@@ -354,21 +367,21 @@ function drawApprovalGroup(
 ) {
   drawTopRect(page, x, top, width, height, { color: WHITE, borderColor: BORDER, borderWidth: 0.65 });
   drawTopRect(page, x, top, width, 16, { color: SOFT_GREY, borderColor: BORDER, borderWidth: 0.65 });
-  drawCellText(page, bold, 'Approved / Disetujui', x, top + 1, width, 14, { fontSize: 6.2, maxLines: 1, align: 'center' });
+  drawCellText(page, bold, 'Approved / Disetujui', x, top + 1, width, 16, { fontSize: 7.1, maxLines: 1, align: 'center' });
   const gap = 4;
   const cellWidth = (width - gap * 4) / 3;
   approvals.forEach((approval, index) => {
     const cx = x + gap + index * (cellWidth + gap);
     const signer = approval.signer;
-    drawCellText(page, bold, approval.label, cx, top + 18, cellWidth, 10, { fontSize: 4.5, maxLines: 1, align: 'center', color: MUTED });
+    drawCellText(page, bold, approval.label, cx, top + 20, cellWidth, 10, { fontSize: 5.0, maxLines: 1, align: 'center', color: MUTED });
     if (!signer) {
       drawCellText(page, regular, 'PENDING', cx, top + 34, cellWidth, 28, { fontSize: 5, maxLines: 1, align: 'center', color: MUTED });
       return;
     }
-    const qrSize = Math.max(26, Math.min(38, height - 52));
-    drawQrCode(page, qrPayload(approval.stage, signer), cx + (cellWidth - qrSize) / 2, top + 28, qrSize);
-    drawCellText(page, bold, signer.name, cx, top + 28 + qrSize + 2, cellWidth, 15, { fontSize: 4.2, minFontSize: 3.4, maxLines: 2, align: 'center' });
-    drawCellText(page, regular, roleLabel(signer.role), cx, top + 28 + qrSize + 16, cellWidth, 10, { fontSize: 3.7, minFontSize: 3.2, maxLines: 1, align: 'center', color: MUTED });
+    const qrSize = Math.max(31, Math.min(43, height - 73));
+    drawQrCode(page, qrPayload(approval.stage, signer), cx + (cellWidth - qrSize) / 2, top + 31, qrSize);
+    drawCellText(page, bold, signer.name, cx, top + 31 + qrSize + 4, cellWidth, 15, { fontSize: 5.0, minFontSize: 4.0, maxLines: 2, align: 'center' });
+    drawCellText(page, regular, roleLabel(signer.role), cx, top + 31 + qrSize + 20, cellWidth, 10, { fontSize: 4.3, minFontSize: 3.7, maxLines: 1, align: 'center', color: MUTED });
   });
 }
 
@@ -527,28 +540,30 @@ export async function buildOfficialKpiPdf(
   drawCellText(page, bold, `Bobot ${numberText(form.total_weight)}%`, MARGIN_X + 470, totalTop, 150, totalHeight, { fontSize: 6.2, maxLines: 1, align: 'right', color: WHITE });
   drawCellText(page, bold, `Final Score ${numberText(form.final_score)}`, MARGIN_X + 620, totalTop, CONTENT_WIDTH - 620, totalHeight, { fontSize: 6.4, maxLines: 1, align: 'right', color: WHITE });
 
-  const checked1 = findStageSigner(history, 'Checked1');
-  const checked2 = findStageSigner(history, 'Checked2');
-  const checkedGap = 8;
-  const checkedWidth = (CONTENT_WIDTH - checkedGap) / 2;
-  drawCheckedBy(page, regular, bold, 'Checked by 1', checked1, MARGIN_X, checkedTop, checkedWidth, checkedHeight);
-  drawCheckedBy(page, regular, bold, 'Checked by 2', checked2, MARGIN_X + checkedWidth + checkedGap, checkedTop, checkedWidth, checkedHeight);
-
-  const signatureGap = 8;
-  const leftWidth = 222;
-  const middleWidth = 330;
-  const rightWidth = CONTENT_WIDTH - leftWidth - middleWidth - signatureGap * 2;
-  const signatureHeight = PAGE_HEIGHT - signatureTop - 24;
-  const known = findStageSigner(history, 'Approval4');
+  // Corporate approval form order. Reading from RIGHT -> LEFT:
+  // Disetujui (GM & BOD) -> Diketahui (PM) -> Diperiksa (Assman) -> Dibuat.
+  // Therefore the visual columns from LEFT -> RIGHT are: Dibuat | Diperiksa | Diketahui | Disetujui.
+  const approvalTop = checkedTop;
+  const signatureGap = 7;
+  const singleWidth = 158;
+  const approvedWidth = CONTENT_WIDTH - singleWidth * 3 - signatureGap * 3;
+  const signatureHeight = PAGE_HEIGHT - approvalTop - 24;
   const prepared = submitterSigner(detail);
+  const checked = findRoleSigner(history, 'ASSMAN') || findStageSigner(history, 'Checked1');
+  const known = findRoleSigner(history, 'PLANT_MANAGER') || findStageSigner(history, 'Checked2');
   const approvals = [
-    { stage: 'Approval1', label: 'Approval 1', signer: findStageSigner(history, 'Approval1') },
-    { stage: 'Approval2', label: 'Approval 2', signer: findStageSigner(history, 'Approval2') },
-    { stage: 'Approval3', label: 'Approval 3', signer: findStageSigner(history, 'Approval3') }
+    { stage: 'GENERAL_MANAGER', label: 'GM', signer: findRoleSigner(history, 'GENERAL_MANAGER') },
+    { stage: 'BOD_KI', label: 'BOD KI', signer: findRoleSigner(history, 'BOD_KI') },
+    { stage: 'BOD_BEI', label: 'BOD BEI', signer: findRoleSigner(history, 'BOD_BEI') }
   ];
-  drawSingleSignature(page, regular, bold, 'Known / Diketahui', 'Approval4', known, MARGIN_X, signatureTop, leftWidth, signatureHeight);
-  drawApprovalGroup(page, regular, bold, approvals, MARGIN_X + leftWidth + signatureGap, signatureTop, middleWidth, signatureHeight);
-  drawSingleSignature(page, regular, bold, 'Prepared / Dibuat', 'Submitter', prepared, MARGIN_X + leftWidth + middleWidth + signatureGap * 2, signatureTop, rightWidth, signatureHeight);
+  let sigX = MARGIN_X;
+  drawSingleSignature(page, regular, bold, 'Prepared / Dibuat', 'Submitter', prepared, sigX, approvalTop, singleWidth, signatureHeight);
+  sigX += singleWidth + signatureGap;
+  drawSingleSignature(page, regular, bold, 'Checked / Diperiksa', 'ASSMAN', checked, sigX, approvalTop, singleWidth, signatureHeight);
+  sigX += singleWidth + signatureGap;
+  drawSingleSignature(page, regular, bold, 'Known / Diketahui', 'PLANT_MANAGER', known, sigX, approvalTop, singleWidth, signatureHeight);
+  sigX += singleWidth + signatureGap;
+  drawApprovalGroup(page, regular, bold, approvals, sigX, approvalTop, approvedWidth, signatureHeight);
 
   page.drawText(`Generated by ${safeText(generatedBy.full_name || '-')}`, { x: MARGIN_X, y: 8, size: 3.7, font: regular, color: MUTED });
   page.drawText('PT Banshu Electric Indonesia - Digital approval QR is the document verification mark.', {
